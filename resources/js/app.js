@@ -3,6 +3,9 @@ window.Vue = require("vue");
 import { router } from "./router";
 import store from "./store";
 import moment from "moment";
+import Toasted from "vue-toasted";
+
+Vue.use(Toasted);
 Vue.use(moment);
 /* 
 import ValidationErrors from "./shared/components/ValidationErrors";

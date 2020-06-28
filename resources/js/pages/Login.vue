@@ -1,48 +1,174 @@
 <template>
-  <div class="container has-text-centered">
-    <div class="column is-4 is-offset-4">
-      <h3 class="title has-text-grey">Login</h3>
-      <p class="subtitle has-text-grey">Please login to proceed.</p>
-      <div class="box">
-        <figure class="avatar">
-            <img src="https://placehold.it/128x128">
-        </figure>
-        <form>
-          <div class="field">
-            <div class="control">
-              <input class="input is-large"
-                     type="email"
-                     placeholder="Your Email"
-                     autofocus=""
-                     autocomplete="email">
-              <!-- <div class="form-error">
+    <div class="container has-text-centered">
+        <div class="column is-4 is-offset-4">
+            <h3 class="title has-text-grey">Login</h3>
+            <p class="subtitle has-text-grey">Please login to proceed.</p>
+            <div class="box">
+                <figure class="avatar">
+                    <img src="https://placehold.it/128x128" />
+                </figure>
+                <form>
+                    <div class="field">
+                        <div class="control">
+                            <input
+                                class="input is-large"
+                                type="email"
+                                placeholder="Your Email"
+                                autofocus=""
+                                autocomplete="email"
+                                v-model="email"
+                                @blur="$v.email.$touch()"
+                                :class="[{ 'is-invalid': $v.email.$error }]"
+                            />
+                            <div v-if="$v.email.$error" class="form-error">
+                                <small
+                                    v-if="!$v.email.required"
+                                    class="help is-danger"
+                                    >Bu alan zorunludur...</small
+                                >
+                                <small
+                                    v-if="!$v.email.email"
+                                    class="help is-danger"
+                                    >Lütfen geçerli bir e-posta adresi
+                                    giriniz...
+                                </small>
+                            </div>
+
+                            <!-- <div class="form-error">
                 <span class="help is-danger">Email is required</span>
                 <span class="help is-danger">Email address is not valid</span>
               </div> -->
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input class="input is-large"
-                     type="password"
-                     placeholder="Your Password"
-                     autocomplete="current-password">
-              <!-- <div class="form-error">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input
+                                class="input is-large"
+                                type="password"
+                                placeholder="Your Password"
+                                autocomplete="current-password"
+                                v-model="password"
+                                @blur="$v.password.$touch()"
+                                :class="[{ 'is-invalid': $v.password.$error }]"
+                            />
+                            <div v-if="$v.password.$error" class="form-error">
+                                <small
+                                    v-if="!$v.password.required"
+                                    class="help is-danger"
+                                    >Bu alan zorunludur...</small
+                                >
+                                <small
+                                    v-if="!$v.password.minLength"
+                                    class="help is-danger"
+                                    >Lütfen şifreniz en az
+                                    {{ $v.password.$params.minLength.min }}
+                                    karakterden oluşmalıdır...
+                                </small>
+                                <small
+                                    v-if="!$v.password.maxLength"
+                                    class="help is-danger"
+                                    >Lütfen şifreniz en fazla
+                                    {{ $v.password.$params.maxLength.max }}
+                                    karakterden oluşmalıdır...
+                                </small>
+                            </div>
+
+                            <!-- <div class="form-error">
                 <span class="help is-danger">Password is required</span>
               </div> -->
+                        </div>
+                    </div>
+                    <button
+                        class="button is-block is-info is-large is-fullwidth"
+                         :disabled="loading"
+                                :loading="loading"
+                                @click.prevent="login"
+                    >
+                        Sign In
+                    </button>
+                </form>
             </div>
-          </div>
-          <button class="button is-block is-info is-large is-fullwidth">Sign In</button>
-        </form>
-      </div>
-      <p class="has-text-grey">
-        <a>Sign In With Google</a>&nbsp;
-        <a>Sign Up</a> &nbsp;·&nbsp;
-        <a href="#">Need Help?</a>
-      </p>
+            <p class="has-text-grey">
+                <a>Sign In With Google</a>&nbsp; <a>Sign Up</a> &nbsp;·&nbsp;
+                <a href="#">Need Help?</a>
+            </p>
+        </div>
     </div>
-  </div>
 </template>
+<script>
+//import validationErrors from "../../shared/mixins/validationErrors";
+import { logIn } from "../shared/utils/auth";
+import {
+  required,
+  email,
+  numeric,
+  minLength,
+  maxLength,
+  sameAs,
+  between
+} from "vuelidate/lib/validators";
+export default {
+  //mixins: [validationErrors],
+  data() {
+    return {
+      email: null,
+      password: null,
+      loading: false
+    };
+  },
+  validations: {
+    email: {
+      required,
+      email
+    },
+
+    password: {
+      required,
+      minLength: minLength(6),
+      maxLength: maxLength(8)
+    }
+  },
+  methods: {
+    async login() {
+      this.loading = true;
+      this.errors = null;
+
+      try {
+        await axios.get("/sanctum/csrf-cookie");
+        await axios
+          .post("/login", {
+            email: this.email,
+            password: this.password
+          })
+          .then(response => {
+            if (response.status) {
+              logIn();
+              this.$store.dispatch("user/fetchAuthUser");
+              this.$store.dispatch("user/isAdmin");
+              //this.$store.dispatch("initAppPermission");
+
+              this.$router.push({
+                name: "Home"
+              });
+              this.$toasted.success(
+                "Welcome! You are logged in successfuly!!",
+                {
+                  theme: "bubble",
+                  position: "top-center",
+                  duration: 5000
+                }
+              );
+            }
+          });
+      } catch (error) {
+        this.errors = error.response && error.response.data.errors;
+      }
+
+      this.loading = false;
+    }
+  }
+};
+</script>
 
 <style scoped>
 .hero.is-success {

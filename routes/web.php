@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Request;
 |
 */
 
-/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-}); */
+});
 
 Route::prefix('app')->group(function () {
     Route::resource('exchanges', 'FrontEnd\ExchangeController');
