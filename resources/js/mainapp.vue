@@ -1,0 +1,178 @@
+<template>
+<div>
+<Header :menuItems="menuItems" :brandName="brandName"/>
+  <div :class="$route.path === '/' ? '' : 'page-wrapper'">
+ <transition name="fade" mode="out-in"><router-view/></transition>
+ </div>
+</div>
+</template>
+
+<script>
+//import { mapState, mapGetters } from "vuex";
+import Home from "./pages/Home";
+import Header from "./components/Header";
+
+export default {
+  name: "mainapp",
+  components: {
+    Home,
+    Header
+  },
+  data() {
+    return {
+      brandName: "Exchangario",
+      menuItems: [
+        { text: "Home", link: "/" },
+        { text: "About", link: "/about" },
+        { text: "FAQ", link: "/faq" },
+        { text: "Login", link: "/login" },
+        { text: "Register", link: "/register" }
+      ]
+    };
+  }
+
+  /* computed: {
+          ...mapGetters({
+              isLoggedIn: "isLoggedIn"
+          })
+      },
+      methods: {
+          logout() {
+              try {
+                  axios.post("/logout").then(response => {
+                      if (response.status) {
+                          this.$store.dispatch("logout");
+                          this.$router.push({
+                              name: "login"
+                          });
+                      }
+                  });
+              } catch (error) {
+                  this.$store.dispatch("logout");
+              }
+          }
+      } */
+};
+</script>
+
+<style lang="scss">
+@import "~bulma/bulma.sass";
+@import "../../public/css/variables";
+@import "../../public/css/main";
+
+.page-wrapper {
+  padding-top: 100px;
+}
+
+.hero-section {
+  position: relative;
+}
+
+.posts {
+  padding-top: 70px;
+}
+
+.posts-type {
+  font-size: 34px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.search-lookup {
+  width: 960px;
+  margin: 0 auto;
+  background-color: #262d32;
+  padding: 20px;
+  color: white;
+  border-radius: 10px;
+}
+
+.search-lookup-wrap {
+  width: 100%;
+  z-index: 2;
+  position: absolute;
+  top: auto;
+  bottom: -42px;
+}
+
+.search-card-find {
+  width: 100%;
+  height: 180px;
+  position: relative;
+  display: block;
+  border-radius: 3px;
+  text-decoration: none;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
+  background-clip: content-box;
+  background-size: cover;
+  background-position: 50% 20%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  -webkit-tap-highlight-color: transparent;
+
+  &-interest {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+
+    > p {
+      font-weight: bold;
+    }
+  }
+
+  .title {
+    color: white;
+  }
+
+  .subtitle {
+    color: white;
+  }
+
+  &-content {
+    &-date {
+      margin: 10px;
+      width: 70px;
+      text-align: center;
+      border-radius: 50%;
+
+      .day {
+        display: block;
+        font-size: 21px;
+        color: white;
+        font-weight: bold;
+      }
+
+      .month {
+        display: block;
+        color: #ff5050;
+        font-weight: bold;
+        font-size: 23px;
+        margin-bottom: -5px;
+      }
+    }
+
+    &-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 15px;
+      width: 100%;
+    }
+  }
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: 0.3s ease-out;
+}
+
+.fade-leave {
+}
+
+.fade-leave-active {
+  transition: 0.3s ease-out;
+  opacity: 0;
+}
+</style>
