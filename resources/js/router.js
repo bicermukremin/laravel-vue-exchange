@@ -9,6 +9,7 @@ import About from "./pages/About.vue";
 import Faq from "./pages/Faq.vue";
 import login from "./pages/Login";
 import register from "./pages/Register";
+import ExchangeDetail from "./components/exchange/ExchangeDetail.vue";
 /* import sendToken from "./auth/SendToken";
 import changePassword from "./auth/ChangePassword"; */
 const routes = [
@@ -16,6 +17,12 @@ const routes = [
         path: "/",
         component: Home,
         name: "Home"
+        //meta: { onlyGuestUser: true }
+    },
+    {
+        path: "/exchange-detail/:id",
+        component: ExchangeDetail,
+        name: "ExchangeDetail"
         //meta: { onlyGuestUser: true }
     },
     {

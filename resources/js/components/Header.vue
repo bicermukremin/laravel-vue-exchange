@@ -3,9 +3,9 @@
       <nav :class="$route.path === '/' ? '' : 'with-background'" class="navbar">
         <div class="container">
           <div class="navbar-brand">
-            <a class="navbar-item has-text-white is-size-2 has-text-weight-bold" href="#">
+            <router-link class="navbar-item has-text-white is-size-2 has-text-weight-bold" to="/">
              {{brandName}}
-            </a>
+            </router-link>
             <span role="button" tabindex="0" class="navbar-burger burger has-text-white" data-target="navbar-menu">
               <span></span>
               <span></span>

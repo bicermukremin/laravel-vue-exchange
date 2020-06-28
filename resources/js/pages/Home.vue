@@ -1,14 +1,14 @@
 <template>
-<div>
-      <Hero />
-    <section class="posts">
-        <div class="container">
-            <div class="posts-type">Latest Posts</div>
-            <ExchangeList :exchanges="exchanges"/>
-        </div>
-    </section>
-    <Pagination></Pagination>
-</div>
+    <div>
+        <Hero />
+        <section class="posts">
+            <div class="container">
+                <div class="posts-type">Latest Posts</div>
+                <ExchangeList />
+            </div>
+        </section>
+        <Pagination></Pagination>
+    </div>
 </template>
 
 <script>
@@ -19,20 +19,13 @@ import ExchangeList from "./../components/exchange/ExchangeList";
 import Hero from "./../components/Hero";
 
 export default {
-  components: {
-    Pagination,
-    Hero,
-    ExchangeList
-  },
-  created() {
-    this.$store.dispatch("exchange/getExchanges");
-  },
-  computed: {
-    exchanges() {
-      return this.$store.state.exchange.items;
+    components: {
+        Pagination,
+        Hero,
+        ExchangeList
     }
-  }
-  /* computed: {
+
+    /* computed: {
           ...mapGetters({
               isLoggedIn: "isLoggedIn"
           })
@@ -55,4 +48,3 @@ export default {
       } */
 };
 </script>
-

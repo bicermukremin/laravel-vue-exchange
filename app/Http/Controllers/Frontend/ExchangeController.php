@@ -53,7 +53,14 @@ class ExchangeController extends Controller
      */
     public function show($id)
     {
-        //
+        $returnArray = [];
+        $returnArray['status'] = false;
+
+        $exchange = Exchange::where('id', $id)->with('user')->with('tags')->first();
+
+        $returnArray['status'] = true;
+        $returnArray['exchange'] = $exchange;
+        return response()->json($returnArray);
     }
 
     /**

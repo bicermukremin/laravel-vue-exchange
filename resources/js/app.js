@@ -2,7 +2,8 @@ require("./bootstrap");
 window.Vue = require("vue");
 import { router } from "./router";
 import store from "./store";
-
+import moment from "moment";
+Vue.use(moment);
 /* 
 import ValidationErrors from "./shared/components/ValidationErrors";
 
@@ -50,6 +51,8 @@ router.beforeEach((to, from, next) => {
         }
     });
 });
+
+*/
 Vue.filter("capitalize", function(value) {
     if (value && typeof value === "string") {
         return value.charAt(0).toUpperCase() + value.slice(1);
@@ -63,7 +66,8 @@ Vue.filter("formatDate", function(value, formatType = "LL") {
 Vue.filter("fronNow", function(value) {
     if (!value) return "";
     return moment(value).fromNow();
-}); */
+});
+
 Vue.component("mainapp", require("./mainapp.vue").default);
 
 const app = new Vue({

@@ -5,8 +5,9 @@
             :key="item.id"
             class="column is-12-mobile is-6-tablet is-4-widescreen is-6-desktop"
         >
+
             <div class="item post-card bottom-border">
-                <a class="item-link" href="#">
+                <router-link class="item-link" :to="{ name: 'ExchangeDetail', params: { id: item.id } }">
                     <figure
                         class="image is-2by1 item-figure background-img"
                         :style="{ 'background-image': `url(${item.image})` }"
@@ -15,23 +16,23 @@
                     <div class="item-featured">
                         <i class="fas fa-star"></i>
                     </div>
-                </a>
-                <div v-for="tag in item.tags" :key="tag" class="item-tags">
+                </router-link>
+                <div class="item-tags" v-for="tag in item.tags" :key="tag.id">
                     <a class="button is-rounded" href="#" title="Some Title">{{
-                        tag
+                        tag.name
                     }}</a>
                 </div>
                 <h2
                     class="title item-title is-size-4 has-text-weight-extra-bold"
                 >
-                    <a class="item-link" href="#">Some Title</a>
+                    <router-link class="item-link" :to="{name:'ExchangeDetail', params:{id:item.id}}">{{ item.title }}</router-link>
                 </h2>
                 <div class="level">
                     <div class="level-left">
-                        <div class="item-author">Filip Jerga</div>
+                        <div class="item-author">{{ item.user.name }}</div>
                     </div>
                     <div class="level-right">
-                        27th December 2019
+                        {{ item.created_at | formatDate }}
                     </div>
                 </div>
             </div>
@@ -41,12 +42,14 @@
 
 <script>
 export default {
-    props: {
-        exchanges: {
-            type: Array,
-            required: true
-        }
+  created() {
+    this.$store.dispatch("exchange/getExchanges");
+  },
+  computed: {
+    exchanges() {
+      return this.$store.state.exchange.items.data;
     }
+  }
 };
 </script>
 

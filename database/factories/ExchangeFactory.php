@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Exchange::class, function (Faker $faker) {
     return [
-        'title' => $faker->text,
+        'title' => $faker->sentence(2),
         'description' => $faker->sentence(10),
         'valuePrice' => $faker->biasedNumberBetween($min = 10, $max = 70),
         'user_id' => $faker->biasedNumberBetween($min = 1, $max = 30),
