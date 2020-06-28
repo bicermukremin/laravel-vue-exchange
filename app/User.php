@@ -10,6 +10,11 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public function exchanges()
+    {
+        return $this->hasMany(Exchange::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
