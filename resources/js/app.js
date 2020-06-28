@@ -1,7 +1,9 @@
 require("./bootstrap");
 window.Vue = require("vue");
 import { router } from "./router";
-/* import { store } from "./store/store";
+import store from "./store";
+
+/* 
 import ValidationErrors from "./shared/components/ValidationErrors";
 
 import common from "./shared/mixins/common";
@@ -66,5 +68,6 @@ Vue.component("mainapp", require("./mainapp.vue").default);
 
 const app = new Vue({
     el: "#app",
-    router
+    router,
+    store
 });
