@@ -12,39 +12,15 @@
 </template>
 
 <script>
-//import { mapState, mapGetters } from "vuex";
-
 import Pagination from "./../components/Pagination";
 import ExchangeList from "./../components/exchange/ExchangeList";
 import Hero from "./../components/Hero";
 
 export default {
-    components: {
-        Pagination,
-        Hero,
-        ExchangeList
-    }
-
-    /* computed: {
-          ...mapGetters({
-              isLoggedIn: "isLoggedIn"
-          })
-      },
-      methods: {
-          logout() {
-              try {
-                  axios.post("/logout").then(response => {
-                      if (response.status) {
-                          this.$store.dispatch("logout");
-                          this.$router.push({
-                              name: "login"
-                          });
-                      }
-                  });
-              } catch (error) {
-                  this.$store.dispatch("logout");
-              }
-          }
-      } */
+  components: {
+    Pagination,
+    Hero,
+    ExchangeList
+  }
 };
 </script>

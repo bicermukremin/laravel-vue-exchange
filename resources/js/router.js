@@ -50,12 +50,8 @@ const routes = [
         component: register
         //meta: { title: "register" }
     }
-    /* {
-        path: "/send-token",
-        name: "sendToken",
-        component: sendToken,
-        meta: { title: "sendToken" }
-    },
+
+    /*
     {
         path: "/change-password/:id",
         name: "changePassword",

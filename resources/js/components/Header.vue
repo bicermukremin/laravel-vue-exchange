@@ -17,6 +17,12 @@
               <!-- Loop through the navigation items -->
               <router-link :to="item.link" v-for="(item, i) in menuItems" :key="i"
               class="navbar-item nav-home" >{{item.text}}</router-link>
+              <router-link v-if="!isLoggedIn" to="/login" 
+              class="navbar-item nav-home" >Login</router-link>
+              <router-link v-if="!isLoggedIn" to="/register" 
+              class="navbar-item nav-home" >Register</router-link>
+              <a v-if="isLoggedIn"  @click.prevent="logout"
+              class="navbar-item nav-home" >Logout</a>
               
             </div>
           </div>
@@ -26,6 +32,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: {
     brandName: {
@@ -35,6 +42,27 @@ export default {
     menuItems: {
       required: true
     }
+  },
+  methods: {
+    logout() {
+      try {
+        axios.post("/logout").then(response => {
+          if (response.status) {
+            this.$store.dispatch("user/logout");
+            this.$router.push({
+              name: "login"
+            });
+          }
+        });
+      } catch (error) {
+        this.$store.dispatch("logout");
+      }
+    }
+  },
+  computed: {
+    ...mapGetters({
+      isLoggedIn: "user/isLoggedIn"
+    })
   }
 };
 </script>

@@ -86,12 +86,28 @@
                     >
                         Sign In
                     </button>
+                    <hr />
+
+                            <div>
+                                No account yet?
+                                <router-link
+                                    :to="{ name: 'register' }"
+                                    class="font-weight-bold"
+                                    >Register</router-link
+                                >
+                            </div>
+
+                            <div>
+                                Forgotten password?
+                                <a
+                                    
+                                    class="font-weight-bold"
+                                    >Reset password</a
+                                >
+                            </div>
                 </form>
             </div>
-            <p class="has-text-grey">
-                <a>Sign In With Google</a>&nbsp; <a>Sign Up</a> &nbsp;·&nbsp;
-                <a href="#">Need Help?</a>
-            </p>
+            
         </div>
     </div>
 </template>
@@ -99,108 +115,108 @@
 //import validationErrors from "../../shared/mixins/validationErrors";
 import { logIn } from "../shared/utils/auth";
 import {
-    required,
-    email,
-    numeric,
-    minLength,
-    maxLength,
-    sameAs,
-    between
+  required,
+  email,
+  numeric,
+  minLength,
+  maxLength,
+  sameAs,
+  between
 } from "vuelidate/lib/validators";
 export default {
-    //mixins: [validationErrors],
-    data() {
-        return {
-            email: null,
-            password: null,
-            loading: false
-        };
+  //mixins: [validationErrors],
+  data() {
+    return {
+      email: null,
+      password: null,
+      loading: false
+    };
+  },
+  validations: {
+    email: {
+      required,
+      email
     },
-    validations: {
-        email: {
-            required,
-            email
-        },
 
-        password: {
-            required,
-            minLength: minLength(6),
-            maxLength: maxLength(8)
-        }
-    },
-    methods: {
-        async login() {
-            this.loading = true;
-            this.errors = null;
-
-            try {
-                await axios.get("/sanctum/csrf-cookie");
-                await axios
-                    .post("/login", {
-                        email: this.email,
-                        password: this.password
-                    })
-                    .then(response => {
-                        if (response.status) {
-                            logIn();
-                            this.$store.dispatch("user/fetchAuthUser");
-                            this.$store.dispatch("user/isAdmin");
-                            this.$store.dispatch("role/initAppPermission");
-
-                            this.$router.push({
-                                name: "Home"
-                            });
-                            this.$toasted.success(
-                                "Welcome! You are logged in successfuly!!",
-                                {
-                                    theme: "bubble",
-                                    position: "top-center",
-                                    duration: 5000
-                                }
-                            );
-                        }
-                    });
-            } catch (error) {
-                this.errors = error.response && error.response.data.errors;
-            }
-
-            this.loading = false;
-        }
+    password: {
+      required,
+      minLength: minLength(6),
+      maxLength: maxLength(8)
     }
+  },
+  methods: {
+    async login() {
+      this.loading = true;
+      this.errors = null;
+
+      try {
+        await axios.get("/sanctum/csrf-cookie");
+        await axios
+          .post("/login", {
+            email: this.email,
+            password: this.password
+          })
+          .then(response => {
+            if (response.status) {
+              logIn();
+              this.$store.dispatch("user/fetchAuthUser");
+              this.$store.dispatch("user/isAdmin");
+              this.$store.dispatch("role/initAppPermission");
+
+              this.$router.push({
+                name: "Home"
+              });
+              this.$toasted.success(
+                "Welcome! You are logged in successfuly!!",
+                {
+                  theme: "bubble",
+                  position: "top-center",
+                  duration: 5000
+                }
+              );
+            }
+          });
+      } catch (error) {
+        this.errors = error.response && error.response.data.errors;
+      }
+
+      this.loading = false;
+    }
+  }
 };
 </script>
 
 <style scoped>
 .hero.is-success {
-    background: #f2f6fa;
+  background: #f2f6fa;
 }
 .hero .nav,
 .hero.is-success .nav {
-    -webkit-box-shadow: none;
-    box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 .box {
-    margin-top: 5rem;
+  margin-top: 5rem;
 }
 .avatar {
-    margin-top: -70px;
-    padding-bottom: 20px;
+  margin-top: -70px;
+  padding-bottom: 20px;
 }
 .avatar img {
-    padding: 5px;
-    background: #fff;
-    border-radius: 50%;
-    -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1),
-        0 0 0 1px rgba(10, 10, 10, 0.1);
-    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  padding: 5px;
+  background: #fff;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1),
+    0 0 0 1px rgba(10, 10, 10, 0.1);
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
 }
 input {
-    font-weight: 300;
+  font-weight: 300;
 }
 p {
-    font-weight: 700;
+  font-weight: 700;
 }
 p.subtitle {
-    padding-top: 1rem;
+  padding-top: 1rem;
 }
 </style>

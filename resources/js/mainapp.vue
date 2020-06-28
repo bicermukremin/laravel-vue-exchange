@@ -24,34 +24,10 @@ export default {
       menuItems: [
         { text: "Home", link: "/" },
         { text: "About", link: "/about" },
-        { text: "FAQ", link: "/faq" },
-        { text: "Login", link: "/login" },
-        { text: "Register", link: "/register" }
+        { text: "FAQ", link: "/faq" }
       ]
     };
   }
-
-  /* computed: {
-          ...mapGetters({
-              isLoggedIn: "isLoggedIn"
-          })
-      },
-      methods: {
-          logout() {
-              try {
-                  axios.post("/logout").then(response => {
-                      if (response.status) {
-                          this.$store.dispatch("logout");
-                          this.$router.push({
-                              name: "login"
-                          });
-                      }
-                  });
-              } catch (error) {
-                  this.$store.dispatch("logout");
-              }
-          }
-      } */
 };
 </script>
 

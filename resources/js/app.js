@@ -4,6 +4,7 @@ import { router } from "./router";
 import store from "./store";
 import moment from "moment";
 import Toasted from "vue-toasted";
+import { isLoggedIn, isAdmin } from "./shared/utils/auth";
 
 Vue.use(Toasted);
 Vue.use(moment);
@@ -11,7 +12,7 @@ Vue.use(moment);
 import ValidationErrors from "./shared/components/ValidationErrors";
 
 import common from "./shared/mixins/common";
-import { isLoggedIn, isAdmin } from "./shared/utils/auth"; */
+ */
 import Vuelidate from "vuelidate";
 
 Vue.config.productionTip = false;
@@ -20,8 +21,7 @@ Vue.use(Vuelidate);
 //Vue.mixin(common);
 
 //Vue.component("v-errors", ValidationErrors);
-
-/* window.axios.interceptors.response.use(
+window.axios.interceptors.response.use(
     response => {
         return response;
     },
@@ -35,13 +35,13 @@ Vue.use(Vuelidate);
 );
 
 router.beforeEach((to, from, next) => {
-    store.dispatch("fetchAuthUser").then(() => {
-        const isAdmin = store.getters["isAdmin"];
+    store.dispatch("user/fetchAuthUser").then(() => {
+        const isAdmin = store.getters["user/isAdmin"];
         if (to.meta.onlyAuthUser) {
             if (isAdmin) {
                 next();
             } else {
-                next({ name: "PageNotAuthenticated" });
+                next(/* { name: "PageNotAuthenticated" } */);
             }
         } else if (to.meta.onlyGuestUser) {
             if (isLoggedIn()) {
@@ -55,7 +55,6 @@ router.beforeEach((to, from, next) => {
     });
 });
 
-*/
 Vue.filter("capitalize", function(value) {
     if (value && typeof value === "string") {
         return value.charAt(0).toUpperCase() + value.slice(1);
