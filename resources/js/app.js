@@ -76,5 +76,8 @@ Vue.component("mainapp", require("./mainapp.vue").default);
 const app = new Vue({
     el: "#app",
     router,
-    store
+    store,
+    created() {
+        this.$store.dispatch("user/loadStateUser");
+    }
 });

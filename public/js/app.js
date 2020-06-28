@@ -2582,8 +2582,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                     _this.$store.dispatch("user/fetchAuthUser");
 
-                    _this.$store.dispatch("user/isAdmin"); //this.$store.dispatch("initAppPermission");
+                    _this.$store.dispatch("user/isAdmin");
 
+                    _this.$store.dispatch("role/initAppPermission");
 
                     _this.$router.push({
                       name: "Home"
@@ -7099,7 +7100,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.hero.is-success[data-v-3b6adb30] {\r\n  background: #f2f6fa;\n}\n.hero .nav[data-v-3b6adb30],\r\n.hero.is-success .nav[data-v-3b6adb30] {\r\n  box-shadow: none;\n}\n.box[data-v-3b6adb30] {\r\n  margin-top: 5rem;\n}\n.avatar[data-v-3b6adb30] {\r\n  margin-top: -70px;\r\n  padding-bottom: 20px;\n}\n.avatar img[data-v-3b6adb30] {\r\n  padding: 5px;\r\n  background: #fff;\r\n  border-radius: 50%;\r\n  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);\n}\ninput[data-v-3b6adb30] {\r\n  font-weight: 300;\n}\np[data-v-3b6adb30] {\r\n  font-weight: 700;\n}\np.subtitle[data-v-3b6adb30] {\r\n  padding-top: 1rem;\n}\r\n", ""]);
+exports.push([module.i, "\n.hero.is-success[data-v-3b6adb30] {\r\n    background: #f2f6fa;\n}\n.hero .nav[data-v-3b6adb30],\r\n.hero.is-success .nav[data-v-3b6adb30] {\r\n    box-shadow: none;\n}\n.box[data-v-3b6adb30] {\r\n    margin-top: 5rem;\n}\n.avatar[data-v-3b6adb30] {\r\n    margin-top: -70px;\r\n    padding-bottom: 20px;\n}\n.avatar img[data-v-3b6adb30] {\r\n    padding: 5px;\r\n    background: #fff;\r\n    border-radius: 50%;\r\n    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);\n}\ninput[data-v-3b6adb30] {\r\n    font-weight: 300;\n}\np[data-v-3b6adb30] {\r\n    font-weight: 700;\n}\np.subtitle[data-v-3b6adb30] {\r\n    padding-top: 1rem;\n}\r\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -61756,7 +61757,7 @@ var render = function() {
             "button",
             {
               staticClass: "button is-block is-info is-large is-fullwidth",
-              attrs: { disabled: _vm.loading, loading: _vm.loading },
+              attrs: { disabled: _vm.$v.$invalid, loading: _vm.loading },
               on: {
                 click: function($event) {
                   $event.preventDefault()
@@ -80238,7 +80239,10 @@ Vue.component("mainapp", __webpack_require__(/*! ./mainapp.vue */ "./resources/j
 var app = new Vue({
   el: "#app",
   router: _router__WEBPACK_IMPORTED_MODULE_0__["router"],
-  store: _store__WEBPACK_IMPORTED_MODULE_1__["default"]
+  store: _store__WEBPACK_IMPORTED_MODULE_1__["default"],
+  created: function created() {
+    this.$store.dispatch("user/loadStateUser");
+  }
 });
 
 /***/ }),
@@ -81231,6 +81235,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_exchange__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/exchange */ "./resources/js/store/modules/exchange.js");
 /* harmony import */ var _modules_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/user */ "./resources/js/store/modules/user.js");
+/* harmony import */ var _modules_role__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/role */ "./resources/js/store/modules/role.js");
+
 
 
 
@@ -81239,7 +81245,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
     exchange: _modules_exchange__WEBPACK_IMPORTED_MODULE_2__["default"],
-    user: _modules_user__WEBPACK_IMPORTED_MODULE_3__["default"]
+    user: _modules_user__WEBPACK_IMPORTED_MODULE_3__["default"],
+    role: _modules_role__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   actions: {},
   mutations: {}
@@ -81333,6 +81340,113 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/role.js":
+/*!********************************************!*\
+  !*** ./resources/js/store/modules/role.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = {
+  roles: {},
+  userPermission: null
+};
+var getters = {
+  getUserPermission: function getUserPermission(state) {
+    return state.userPermission;
+  },
+  getRoles: function getRoles(state) {
+    return state.roles;
+  },
+  getRole: function getRole(state) {
+    return function (key) {
+      return state.roles.filter(function (element) {
+        return element.key == key;
+      });
+    };
+  }
+};
+var actions = {
+  initAppRole: function initAppRole(_ref) {
+    var commit = _ref.commit;
+    axios.get("/app/roles").then(function (response) {
+      var data = response.data;
+      commit("setRoles", data);
+      localStorage.setItem("roles", JSON.stringify(data));
+    });
+  },
+  initAppPermission: function initAppPermission(_ref2) {
+    var commit = _ref2.commit;
+    axios.get("/app/permission").then(function (response) {
+      var data = response.data;
+      commit("setUserPermission", data);
+      localStorage.setItem("permission", JSON.stringify(data));
+    });
+  },
+  updatePermission: function updatePermission(_ref3, payload) {
+    var commit = _ref3.commit;
+    commit("setUserPermission", payload);
+    localStorage.setItem("permission", payload);
+  },
+  setRoles: function setRoles(_ref4, payload) {
+    var commit = _ref4.commit;
+    commit("setRoles", payload);
+    localStorage.setItem("roles", JSON.stringify(state.roles));
+  },
+  setRole: function setRole(_ref5, payload) {
+    var commit = _ref5.commit;
+    commit("setRole", payload);
+    localStorage.setItem("roles", JSON.stringify(state.roles));
+  },
+  loadStateRoles: function loadStateRoles(context) {
+    var roles = localStorage.getItem("roles" || false);
+
+    if (roles) {
+      context.commit("setRoles", JSON.parse(roles));
+    }
+  },
+  addToRoles: function addToRoles(_ref6, payload) {
+    var commit = _ref6.commit,
+        state = _ref6.state;
+    commit("addRole", payload);
+    localStorage.setItem("roles", JSON.stringify(state.roles));
+  },
+  removeFromRoles: function removeFromRoles(_ref7, payload) {
+    var commit = _ref7.commit,
+        state = _ref7.state;
+    commit("removeRole", payload);
+    localStorage.setItem("roles", JSON.stringify(state.roles));
+  }
+};
+var mutations = {
+  setUserPermission: function setUserPermission(state, payload) {
+    state.userPermission = payload;
+  },
+  addRole: function addRole(state, payload) {
+    state.roles.push(payload);
+  },
+  removeRole: function removeRole(state, payload) {
+    state.roles.splice(payload.index, 1);
+  },
+  setRoles: function setRoles(state, payload) {
+    state.roles = payload;
+  },
+  setRole: function setRole(state, payload) {
+    state.roles.splice(payload.index, 1, payload.role);
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/modules/user.js":
 /*!********************************************!*\
   !*** ./resources/js/store/modules/user.js ***!
@@ -81353,7 +81467,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 var state = {
-  namespaced: true,
   user: {},
   userName: "",
   isLoggedIn: false,
@@ -81371,35 +81484,31 @@ var getters = {
   },
   userName: function userName(state) {
     return state.userName = localStorage.getItem("userName");
-  },
-  isMeetupOwner: function isMeetupOwner(state) {
-    return function (meetupCreatorId) {
+  }
+  /*     isMeetupOwner: state => meetupCreatorId => {
       if (!state.user) return false;
       return state.user.id === meetupCreatorId;
-    };
   },
-  isMember: function isMember(state) {
-    return function (meetupId) {
+  isMember: state => meetupId => {
       if (state.user && state.user["meetups"]) {
-        var i = state.user.meetups.findIndex(function (meetup) {
-          return meetup.id == meetupId;
-        });
-
-        if (i > -1) {
-          return true;
-        } else {
-          return false;
-        }
+          const i = state.user.meetups.findIndex(
+              meetup => meetup.id == meetupId
+          );
+           if (i > -1) {
+              return true;
+          } else {
+              return false;
+          }
       } else {
-        return false;
+          return false;
       }
-    };
-  }
+  } */
+
 };
 var actions = {
   fetchAuthUser: function fetchAuthUser(_ref) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var commit, dispatch, user, userMeetup;
+      var commit, dispatch, user;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -81407,7 +81516,7 @@ var actions = {
               commit = _ref.commit, dispatch = _ref.dispatch;
 
               if (!Object(_shared_utils_auth__WEBPACK_IMPORTED_MODULE_1__["isLoggedIn"])()) {
-                _context.next = 18;
+                _context.next = 16;
                 break;
               }
 
@@ -81417,30 +81526,26 @@ var actions = {
 
             case 5:
               user = _context.sent.data;
-              _context.next = 8;
-              return axios.get("/app/userMeetup");
+              console.log(user); //console.log(userMeetup.userMeetup[0]);
 
-            case 8:
-              userMeetup = _context.sent.data;
-              //console.log(userMeetup.userMeetup[0]);
               localStorage.setItem("userName", JSON.stringify(user.username));
-              commit("setAuthUser", userMeetup.userMeetup[0]);
+              commit("setAuthUser", user);
               commit("setLoggedIn", true);
               commit("userName", user.username);
-              _context.next = 18;
+              _context.next = 16;
               break;
 
-            case 15:
-              _context.prev = 15;
+            case 13:
+              _context.prev = 13;
               _context.t0 = _context["catch"](2);
               dispatch("logout");
 
-            case 18:
+            case 16:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[2, 15]]);
+      }, _callee, null, [[2, 13]]);
     }))();
   },
   updateProfile: function updateProfile(_ref2, payload) {
@@ -81484,6 +81589,7 @@ var mutations = {
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
   state: state,
   getters: getters,
   actions: actions,

@@ -1,7 +1,6 @@
 import { isLoggedIn, logOut } from "./../../shared/utils/auth";
 
 const state = {
-    namespaced: true,
     user: {},
     userName: "",
     isLoggedIn: false,
@@ -20,8 +19,8 @@ const getters = {
     },
     userName(state) {
         return (state.userName = localStorage.getItem("userName"));
-    },
-    isMeetupOwner: state => meetupCreatorId => {
+    }
+    /*     isMeetupOwner: state => meetupCreatorId => {
         if (!state.user) return false;
         return state.user.id === meetupCreatorId;
     },
@@ -39,7 +38,7 @@ const getters = {
         } else {
             return false;
         }
-    }
+    } */
 };
 
 const actions = {
@@ -47,10 +46,11 @@ const actions = {
         if (isLoggedIn()) {
             try {
                 const user = (await axios.get("/user")).data;
-                const userMeetup = (await axios.get("/app/userMeetup")).data;
+                console.log(user);
+
                 //console.log(userMeetup.userMeetup[0]);
                 localStorage.setItem("userName", JSON.stringify(user.username));
-                commit("setAuthUser", userMeetup.userMeetup[0]);
+                commit("setAuthUser", user);
                 commit("setLoggedIn", true);
                 commit("userName", user.username);
             } catch (error) {
@@ -101,6 +101,7 @@ const mutations = {
 };
 
 export default {
+    namespaced: true,
     state,
     getters,
     actions,

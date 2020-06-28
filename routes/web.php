@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,13 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('app')->group(function () {
     Route::resource('exchanges', 'FrontEnd\ExchangeController');
-    /* Route::resource('roles', 'Admin\RoleController');
-    Route::post('assign_roles', 'Admin\RoleController@assignRole');
-    Route::post('send-token', 'FrontEnd\UserController@sendToken');
-    Route::post('validate-token', 'FrontEnd\UserController@validateToken');
-    Route::post('reset-password', 'FrontEnd\UserController@resetPassword');
+    Route::resource('roles', 'Admin\RoleController');
+    //Route::post('assign_roles', 'Admin\RoleController@assignRole');
+    //Route::post('send-token', 'FrontEnd\UserController@sendToken');
+    //Route::post('validate-token', 'FrontEnd\UserController@validateToken');
+    //Route::post('reset-password', 'FrontEnd\UserController@resetPassword');
     Route::get('/permission', 'Admin\RoleController@permission');
-    Route::get('/isAdmin', 'Admin\RoleController@isAdmin'); */
+    Route::get('/isAdmin', 'Admin\RoleController@isAdmin');
 });
 
 Route::get('/{any?}', function () {
