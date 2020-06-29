@@ -2303,6 +2303,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2314,7 +2329,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         image: "",
         valuePrice: "",
         country: "",
-        city: ""
+        city: "",
+        tags: []
       }
     };
   },
@@ -2385,6 +2401,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    handleTags: function handleTags(e) {
+      var value = e.target.value;
+
+      if (value && value.trim().length > 1 && (value.substr(-1) === "," || value.substr(-1) === " ")) {
+        this.form.tags.push(value.split(",")[0]);
+        e.target.value = "";
+      }
     }
   }
 });
@@ -2504,6 +2528,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     exchange: function exchange() {
       return this.$store.state.exchange.item;
+    },
+    author: function author() {
+      return this.$store.state.exchange.item.user;
     }
   }
 });
@@ -8458,7 +8485,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.form-container {\r\n  max-width: 960px;\r\n  margin: 0 auto;\n}\r\n", ""]);
+exports.push([module.i, "\n.form-container {\r\n  max-width: 960px;\r\n  margin: 0 auto;\n}\n.tag {\r\n  margin: 3px;\n}\r\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -63085,6 +63112,31 @@ var render = function() {
             : _vm._e()
         ]),
         _vm._v(" "),
+        _c("div", { staticClass: "field" }, [
+          _c("label", { staticClass: "label" }, [_vm._v("Tags")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "control" },
+            [
+              _c("input", {
+                staticClass: "input",
+                attrs: { type: "text", placeholder: "programming" },
+                on: { input: _vm.handleTags }
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.form.tags, function(tag) {
+                return _c(
+                  "div",
+                  { key: "t-" + tag, staticClass: "tag is-primary is-medium" },
+                  [_vm._v("\n            " + _vm._s(tag) + "\n          ")]
+                )
+              })
+            ],
+            2
+          )
+        ]),
+        _vm._v(" "),
         _c("div", { staticClass: "field is-grouped" }, [
           _c("div", { staticClass: "control" }, [
             _c(
@@ -63162,7 +63214,30 @@ var render = function() {
                     _vm._s(_vm._f("capitalize")(_vm.exchange.type)) +
                     "\n            "
                 )
-              ])
+              ]),
+              _vm._v(" "),
+              _vm.author
+                ? _c("div", { staticClass: "user-tile" }, [
+                    _c("div", { staticClass: "user-tile-image" }, [
+                      _vm.author.avatar
+                        ? _c("figure", { staticClass: "image is-64x64" }, [
+                            _c("img", {
+                              staticClass: "is-rounded",
+                              attrs: { src: _vm.author.avatar }
+                            })
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _vm.author.name
+                      ? _c("div", { staticClass: "user-tile-author center" }, [
+                          _c("h3", { staticClass: "user-tile-author-name" }, [
+                            _vm._v("by " + _vm._s(_vm.author.name))
+                          ])
+                        ])
+                      : _vm._e()
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "column is-3" }, [
@@ -63201,16 +63276,7 @@ var render = function() {
                           ? _c("span", { staticClass: "rate" }, [_vm._v("Day")])
                           : _c("span", { staticClass: "rate" }, [
                               _vm._v("Hour")
-                            ]),
-                        _vm._v(" "),
-                        _c(
-                          "span",
-                          {
-                            staticClass: "title is-2",
-                            staticStyle: { color: "gray" }
-                          },
-                          [_vm._v("$23 /\n                      ")]
-                        )
+                            ])
                       ])
                     ]),
                     _vm._v(" "),
@@ -63257,7 +63323,15 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(1)
+          _c("div", { staticClass: "section product-description p-t-none" }, [
+            _c("div", { staticClass: "product-description-title" }, [
+              _vm._v(_vm._s(_vm.exchange.title))
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "product-description-details" }, [
+              _c("p", [_vm._v(_vm._s(_vm.exchange.description))])
+            ])
+          ])
         ])
       ])
     ])
@@ -63279,20 +63353,6 @@ var staticRenderFns = [
         _c("li", [
           _vm._v("\n                        Learn more\n                      ")
         ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "section product-description p-t-none" }, [
-      _c("div", { staticClass: "product-description-title" }, [
-        _vm._v("Course Info")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "product-description-details" }, [
-        _c("p", [_vm._v("Some Desc")])
       ])
     ])
   }

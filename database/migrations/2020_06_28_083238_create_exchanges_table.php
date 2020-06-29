@@ -23,7 +23,6 @@ class CreateExchangesTable extends Migration
             $table->string('image');
             $table->string('country');
             $table->string('city');
-            $table->bigInteger('tag_id');
             $table->string('status')->default('active');
             $table->timestamps();
         });

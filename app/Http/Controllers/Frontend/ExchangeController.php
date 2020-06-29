@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Exchange;
 use App\Http\Controllers\Controller;
+use App\Tag;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -45,11 +46,24 @@ class ExchangeController extends Controller
     {
         $returnArray = [];
         $returnArray['status'] = false;
-        $all = $request->except('token');
+        $all = $request->except('token', 'tags');
         $all['user_id'] = Auth::user()->id;
-        $all['tag_id'] = random_int(1, 20);
+        $tags = $request->tags;
 
         $create = Exchange::create($all);
+
+        if ($tags) {
+
+            foreach ($tags as $key => $tag) {
+                Tag::create([
+                    'name' => $tags[$key],
+                    'exchange_id' => $create->id
+                ]);
+            }
+        }
+
+
+
         if ($create) {
             $exchange = Exchange::where('id', $create->id)->with('user')->with('tags')->first();
 

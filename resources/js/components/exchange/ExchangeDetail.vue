@@ -16,16 +16,16 @@
                 {{ exchange.type | capitalize }}
               </h2>
 
-              <!-- <div v-if="author" class="user-tile">
+            <div v-if="author" class="user-tile">
                 <div class="user-tile-image">
-                  <figure v-if="author.photoURL" class="image is-64x64">
-                    <img class="is-rounded" :src="author.photoURL">
+                  <figure v-if="author.avatar" class="image is-64x64">
+                    <img class="is-rounded" :src="author.avatar">
                   </figure>
                 </div>
-                <div v-if="author.displayName" class="user-tile-author center">
-                  <h3 class="user-tile-author-name">by {{author.displayName}}</h3>
+                <div v-if="author.name" class="user-tile-author center">
+                  <h3 class="user-tile-author-name">by {{author.name}}</h3>
                 </div>
-              </div> -->
+              </div>
             </div>
             <div class="column is-3">
               <div class="column-right">
@@ -43,8 +43,8 @@
                         </span>
                         <span class="rate" v-if="exchange.type==='product'">Day</span>
                         <span class="rate" v-else>Hour</span>
-                        <span class="title is-2" style="color:gray;">$23 /
-                        </span>
+                         <!--<span class="title is-2" style="color:gray;">$23 
+                        </span>-->
                       
                       </div>
                     </div>
@@ -85,9 +85,9 @@
             </div>
           </div>
           <div class="section product-description p-t-none">
-            <div class="product-description-title">Course Info</div>
+            <div class="product-description-title">{{ exchange.title }}</div>
             <div class="product-description-details">
-              <p>Some Desc</p>
+              <p>{{ exchange.description }}</p>
             </div>
           </div>
         </div>
@@ -103,6 +103,9 @@ export default {
   computed: {
     exchange() {
       return this.$store.state.exchange.item;
+    },
+    author() {
+      return this.$store.state.exchange.item.user;
     }
   }
 };

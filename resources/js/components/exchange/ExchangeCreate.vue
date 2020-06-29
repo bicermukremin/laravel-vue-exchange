@@ -135,8 +135,23 @@
                                     v-if="!$v.form.city.required"
                                     class="help is-danger"
                                     >Bu alan zorunludur...</small>
-                               
-                            </div>
+          </div>
+        </div>
+         <div class="field">
+          <label class="label">Tags</label>
+          <div class="control">
+            <input 
+              @input="handleTags"
+              class="input" 
+              type="text" 
+              placeholder="programming">
+            <div 
+              v-for="tag in form.tags"
+              :key="`t-${tag}`"
+              class="tag is-primary is-medium">
+              {{tag}}
+            </div>
+          </div>
         </div>
         
         <div class="field is-grouped">
@@ -173,7 +188,8 @@ export default {
         image: "",
         valuePrice: "",
         country: "",
-        city: ""
+        city: "",
+        tags: []
       }
     };
   },
@@ -228,6 +244,19 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+
+    handleTags(e) {
+      const { value } = e.target;
+      if (
+        value &&
+        value.trim().length > 1 &&
+        (value.substr(-1) === "," || value.substr(-1) === " ")
+      ) {
+        this.form.tags.push(value.split(",")[0]);
+
+        e.target.value = "";
+      }
     }
   }
 };
@@ -239,5 +268,9 @@ export default {
 .form-container {
   max-width: 960px;
   margin: 0 auto;
+}
+
+.tag {
+  margin: 3px;
 }
 </style>
