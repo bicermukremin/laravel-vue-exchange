@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Exchange;
 use App\Http\Controllers\Controller;
+use Auth;
 use Illuminate\Http\Request;
 
 class ExchangeController extends Controller
@@ -18,7 +19,7 @@ class ExchangeController extends Controller
         $returnArray = [];
         $returnArray['status'] = false;
 
-        $exchanges = Exchange::orderByDesc('created_at')->with('user')->with('tags')->paginate(10);
+        $exchanges = Exchange::orderByDesc('created_at')->with('user')->with('tags')->paginate(12);
         $returnArray['status'] = true;
         $returnArray['exchanges'] = $exchanges;
         return response()->json($returnArray);
@@ -42,7 +43,21 @@ class ExchangeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $returnArray = [];
+        $returnArray['status'] = false;
+        $all = $request->except('token');
+        $all['user_id'] = Auth::user()->id;
+        $all['tag_id'] = random_int(1, 20);
+
+        $create = Exchange::create($all);
+        if ($create) {
+            $exchange = Exchange::where('id', $create->id)->with('user')->with('tags')->first();
+
+            $returnArray['status'] = true;
+            $returnArray['exchange'] = $exchange;
+            $returnArray['message'] = 'You have created exchange successfully!';
+            return response()->json($returnArray);
+        }
     }
 
     /**

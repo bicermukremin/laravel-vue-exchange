@@ -20,6 +20,11 @@ export default {
                 const exchange = res.data.exchange;
                 commit("setExchangeDetail", exchange);
             });
+        },
+
+        createExchange({ commit }, payload) {
+            commit("setExchangeDetail", payload);
+            commit("addExchange", payload);
         }
     },
     mutations: {
@@ -28,6 +33,9 @@ export default {
         },
         setExchangeDetail(state, exchange) {
             state.item = exchange;
+        },
+        addExchange(state, exchange) {
+            state.items.data.push(exchange);
         }
     }
 };

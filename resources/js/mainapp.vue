@@ -37,7 +37,7 @@ export default {
 @import "../../public/css/main";
 
 .page-wrapper {
-  padding-top: 100px;
+  padding-top: 120px;
 }
 
 .hero-section {

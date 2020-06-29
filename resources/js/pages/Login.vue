@@ -177,7 +177,12 @@ export default {
             }
           });
       } catch (error) {
-        this.errors = error.response && error.response.data.errors;
+        //this.errors = error.response && error.response.data.errors;
+        this.$toasted.error(error.response.data.errors.email, {
+          theme: "bubble",
+          position: "top-center",
+          duration: 5000
+        });
       }
 
       this.loading = false;

@@ -50,6 +50,12 @@
                         >
                         <router-link
                             v-if="isLoggedIn"
+                            :to="{name:'exchangeCreate'}"
+                            class="navbar-item nav-home"
+                            >Create Exchange</router-link
+                        >
+                        <router-link
+                            v-if="isLoggedIn"
                             to="/profile"
                             class="navbar-item nav-home"
                             >Profile</router-link
@@ -70,39 +76,39 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-    props: {
-        brandName: {
-            required: true,
-            type: String
-        },
-        menuItems: {
-            required: true
-        }
+  props: {
+    brandName: {
+      required: true,
+      type: String
     },
-    methods: {
-        logout() {
-            try {
-                axios.post("/logout").then(response => {
-                    if (response.status) {
-                        this.$store.dispatch("user/logout");
-                        this.$router.push({
-                            name: "login"
-                        });
-                    }
-                });
-            } catch (error) {
-                this.$store.dispatch("logout");
-            }
-        }
-    },
-    computed: {
-        ...mapGetters({
-            isLoggedIn: "user/isLoggedIn"
-        }),
-        user() {
-            return this.$store.state.user.user;
-        }
+    menuItems: {
+      required: true
     }
+  },
+  methods: {
+    logout() {
+      try {
+        axios.post("/logout").then(response => {
+          if (response.status) {
+            this.$store.dispatch("user/logout");
+            this.$router.push({
+              name: "login"
+            });
+          }
+        });
+      } catch (error) {
+        this.$store.dispatch("logout");
+      }
+    }
+  },
+  computed: {
+    ...mapGetters({
+      isLoggedIn: "user/isLoggedIn"
+    }),
+    user() {
+      return this.$store.state.user.user;
+    }
+  }
 };
 </script>
 

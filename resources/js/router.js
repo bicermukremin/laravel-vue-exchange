@@ -10,6 +10,7 @@ import Faq from "./pages/Faq.vue";
 import login from "./pages/Login";
 import register from "./pages/Register";
 import ExchangeDetail from "./components/exchange/ExchangeDetail.vue";
+import exchangeCreate from "./components/exchange/ExchangeCreate.vue";
 import Profile from "./components/profile/ProfileDetail.vue";
 import PageNotAuthenticated from "./pages/PageNotAuthenticated";
 import sendToken from "./pages/SendToken.vue";
@@ -43,6 +44,12 @@ const routes = [
         component: Faq,
         name: "Faq"
         //meta: { onlyGuestUser: true }
+    },
+    {
+        path: "/exchange/new",
+        component: exchangeCreate,
+        name: "exchangeCreate",
+        meta: { onlyGuestUser: true }
     },
     {
         path: "/profile",

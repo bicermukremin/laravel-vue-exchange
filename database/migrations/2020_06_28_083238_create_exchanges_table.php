@@ -17,7 +17,7 @@ class CreateExchangesTable extends Migration
             $table->id();
             $table->string('type')->default('product');
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('valuePrice');
             $table->bigInteger('user_id');
             $table->string('image');
