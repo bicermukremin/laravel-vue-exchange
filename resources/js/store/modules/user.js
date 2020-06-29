@@ -46,7 +46,7 @@ const actions = {
         if (isLoggedIn()) {
             try {
                 const user = (await axios.get("/user")).data;
-                console.log(user);
+                //console.log(user);
 
                 //console.log(userMeetup.userMeetup[0]);
                 localStorage.setItem("userName", JSON.stringify(user.username));
@@ -62,6 +62,7 @@ const actions = {
     updateProfile({ commit }, payload) {
         commit("setAuthUser", payload);
     },
+
     isAdmin({ commit, state }) {
         axios.get("/app/isAdmin").then(response => {
             let data = response.data;

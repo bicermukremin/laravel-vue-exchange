@@ -99,10 +99,10 @@
 
                             <div>
                                 Forgotten password?
-                                <a
-                                    
+                                <router-link
+                                    :to="{ name: 'sendToken' }"
                                     class="font-weight-bold"
-                                    >Reset password</a
+                                    >Reset password</router-link
                                 >
                             </div>
                 </form>

@@ -41,13 +41,13 @@ router.beforeEach((to, from, next) => {
             if (isAdmin) {
                 next();
             } else {
-                next(/* { name: "PageNotAuthenticated" } */);
+                next({ name: "PageNotAuthenticated" });
             }
         } else if (to.meta.onlyGuestUser) {
             if (isLoggedIn()) {
                 next();
             } else {
-                next({ name: "login" });
+                next({ name: "PageNotAuthenticated" });
             }
         } else {
             next();

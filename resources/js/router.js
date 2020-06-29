@@ -10,9 +10,16 @@ import Faq from "./pages/Faq.vue";
 import login from "./pages/Login";
 import register from "./pages/Register";
 import ExchangeDetail from "./components/exchange/ExchangeDetail.vue";
-/* import sendToken from "./auth/SendToken";
-import changePassword from "./auth/ChangePassword"; */
+import Profile from "./components/profile/ProfileDetail.vue";
+import PageNotAuthenticated from "./pages/PageNotAuthenticated";
+import sendToken from "./pages/SendToken.vue";
+import changePassword from "./pages/ChangePassword";
 const routes = [
+    {
+        path: "/401",
+        name: "PageNotAuthenticated",
+        component: PageNotAuthenticated
+    },
     {
         path: "/",
         component: Home,
@@ -37,6 +44,12 @@ const routes = [
         name: "Faq"
         //meta: { onlyGuestUser: true }
     },
+    {
+        path: "/profile",
+        component: Profile,
+        name: "Profile",
+        meta: { onlyGuestUser: true }
+    },
 
     {
         path: "/login",
@@ -49,16 +62,21 @@ const routes = [
         name: "register",
         component: register
         //meta: { title: "register" }
-    }
+    },
 
-    /*
     {
         path: "/change-password/:id",
         name: "changePassword",
         component: changePassword,
         props: true,
         meta: { title: "changePassword" }
-    } */
+    },
+    {
+        path: "/send-token",
+        name: "sendToken",
+        component: sendToken,
+        meta: { title: "sendToken" }
+    }
 ];
 
 export const router = new VueRouter({

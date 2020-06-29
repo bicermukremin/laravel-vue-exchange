@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return response($request->user());
 });
 
 Route::prefix('app')->group(function () {
@@ -24,11 +24,13 @@ Route::prefix('app')->group(function () {
 
     Route::resource('roles', 'Admin\RoleController');
     /* Route::post('assign_roles', 'Admin\RoleController@assignRole');
-    Route::post('send-token', 'FrontEnd\UserController@sendToken');
-    Route::post('validate-token', 'FrontEnd\UserController@validateToken');
-    Route::post('reset-password', 'FrontEnd\UserController@resetPassword'); */
+     */
+    Route::post('send-token', 'Admin\UserController@sendToken');
+    Route::post('validate-token', 'Admin\UserController@validateToken');
+    Route::post('reset-password', 'Admin\UserController@resetPassword');
     Route::get('/permission', 'Admin\RoleController@permission');
     Route::get('/isAdmin', 'Admin\RoleController@isAdmin');
+    Route::patch('/updateProfile/{id}', 'Admin\UserController@updateProfile');
 });
 
 Route::get('/{any?}', function () {
