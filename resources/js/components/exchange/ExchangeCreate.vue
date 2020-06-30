@@ -232,7 +232,8 @@ export default {
             const exchange = res.data.exchange;
             this.$store.dispatch("exchange/createExchange", exchange);
             this.$router.push({
-              name: "Home"
+              name: "ExchangeDetail",
+              params: { id: exchange.id }
             });
             this.$toasted.success(res.data.message, {
               theme: "bubble",

@@ -1,5 +1,7 @@
 <template>
-    <header class="header">
+    <header class="header"
+    :class="$route.path === '/' ? '' : 'base-header' "
+    >
         <nav
             :class="$route.path === '/' ? '' : 'with-background'"
             class="navbar"

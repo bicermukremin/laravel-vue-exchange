@@ -48,11 +48,7 @@
                       
                       </div>
                     </div>
-                    <a
-                      target="_"
-                      class="button is-fullwidth is-large is-danger is-outlined m-b-sm">
-                      Make a deal
-                    </a>
+                   <DealModal :exchange="exchange" :loggedInUserExchanges="loggedInUserExchanges"/>
                     <div class="content">
                       <ul class="m-t-none">
                         <li>
@@ -96,7 +92,12 @@
   </div>
 </template>
 <script>
+import DealModal from "./DealModal";
+
 export default {
+  components: {
+    DealModal
+  },
   created() {
     this.$store.dispatch("exchange/getExchangeDetail", this.$route.params.id);
   },
@@ -106,6 +107,10 @@ export default {
     },
     author() {
       return this.$store.state.exchange.item.user;
+    },
+
+    loggedInUserExchanges() {
+      return this.$store.state.exchange.loggedInUserExchanges;
     }
   }
 };

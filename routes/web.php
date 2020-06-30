@@ -23,6 +23,7 @@ Route::prefix('app')->group(function () {
 
 
     Route::resource('roles', 'Admin\RoleController');
+    Route::resource('users', 'Admin\UserController');
     /* Route::post('assign_roles', 'Admin\RoleController@assignRole');
      */
     Route::post('send-token', 'Admin\UserController@sendToken');

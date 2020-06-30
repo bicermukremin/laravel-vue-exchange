@@ -19,6 +19,12 @@ const getters = {
     },
     userName(state) {
         return (state.userName = localStorage.getItem("userName"));
+    },
+    isExchangeOwner: state => exchangeOwnerId => {
+        if (!state.user) return false;
+        return (
+            state.user && exchangeOwnerId && state.user.id === exchangeOwnerId
+        );
     }
     /*     isMeetupOwner: state => meetupCreatorId => {
         if (!state.user) return false;

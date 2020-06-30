@@ -5,14 +5,22 @@ export default {
     state() {
         return {
             items: {},
-            item: {}
+            item: {},
+            loggedInUserExchanges: {}
         };
     },
+
     actions: {
         async getExchanges({ commit }) {
             await axios.get("/app/exchanges").then(res => {
                 const exchanges = res.data.exchanges;
                 commit("setExchanges", exchanges);
+            });
+        },
+        async getLoggedInUserExchanges({ commit }, userId) {
+            await axios.get(`/app/users/${userId}`).then(res => {
+                const exchanges = res.data.user[0].exchanges;
+                commit("setUserExchanges", exchanges);
             });
         },
         async getExchangeDetail({ commit }, exchangeId) {
@@ -30,6 +38,9 @@ export default {
     mutations: {
         setExchanges(state, exchanges) {
             state.items = exchanges;
+        },
+        setUserExchanges(state, exchanges) {
+            state.loggedInUserExchanges = exchanges;
         },
         setExchangeDetail(state, exchange) {
             state.item = exchange;

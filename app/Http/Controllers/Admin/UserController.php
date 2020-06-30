@@ -54,16 +54,12 @@ class UserController extends Controller
     {
         $returnArray = [];
         $returnArray['status'] = false;
-        $user = User::where('id', $id)->with('meetups')->withCount('meetups')->with('meetups.category')
-            ->with('threads')->withCount('threads')
-            ->with('posts')->withCount('posts')->get();
-        $ownmeetups = Meetup::where('meetupCreator', $id)->with('category')->get();
-        $owncount = $ownmeetups->count();
+        $user = User::where('id', $id)->with('exchanges')->get();
+
+
         if ($user) {
             $returnArray['status'] = true;
             $returnArray['user'] = $user;
-            $returnArray['ownmeetups'] = $ownmeetups;
-            $returnArray['owncount'] = $owncount;
             return response()->json($returnArray);
         }
     }
