@@ -69,7 +69,7 @@ Vue.filter("fronNow", function(value) {
     if (!value) return "";
     return moment(value).fromNow();
 });
-
+Vue.component("pagination", require("laravel-vue-pagination"));
 Vue.component("mainapp", require("./mainapp.vue").default);
 
 const app = new Vue({

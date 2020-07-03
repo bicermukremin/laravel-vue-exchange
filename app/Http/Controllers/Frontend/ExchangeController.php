@@ -17,10 +17,17 @@ class ExchangeController extends Controller
      */
     public function index()
     {
+
         $returnArray = [];
         $returnArray['status'] = false;
+        $search = request()->query('title');
 
-        $exchanges = Exchange::orderByDesc('created_at')->with('user')->with('tags')->paginate(12);
+        if ($search) {
+
+            $exchanges = Exchange::where('title', 'LIKE', "%$search%")->orderByDesc('created_at')->with('user')->with('tags')->paginate(3);
+        } else {
+            $exchanges = Exchange::orderByDesc('created_at')->with('user')->with('tags')->paginate(3);
+        }
         $returnArray['status'] = true;
         $returnArray['exchanges'] = $exchanges;
         return response()->json($returnArray);

@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { applyFilters } from "./../../helpers/index";
 
 export default {
     namespaced: true,
@@ -11,6 +11,17 @@ export default {
     },
 
     actions: {
+        getList({ commit, state }, options) {
+            const url = applyFilters("/app/exchanges", options.filter);
+
+            axios.get(url).then(response => {
+                let data = response.data.exchanges;
+                //console.log(data);
+
+                commit("setExchanges", data);
+            });
+        },
+
         async getExchanges({ commit }) {
             await axios.get("/app/exchanges").then(res => {
                 const exchanges = res.data.exchanges;
