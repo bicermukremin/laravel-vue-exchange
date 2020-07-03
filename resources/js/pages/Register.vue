@@ -4,7 +4,7 @@
         <h3 class="title has-text-grey">Register</h3>
         <div class="box">
             <figure class="avatar">
-                <img src="https://placehold.it/128x128">
+                <img src="https://sibertehdit.com/wp-content/uploads/2019/10/ms-exchange.png">
             </figure>
 
             <form>

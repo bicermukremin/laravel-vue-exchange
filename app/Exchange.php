@@ -16,4 +16,9 @@ class Exchange extends Model
     {
         return $this->hasMany(Tag::class);
     }
+
+    public function opportunities()
+    {
+        return $this->belongsToMany(Opportunity::class);
+    }
 }

@@ -17,12 +17,13 @@
                 <button @click="isOpen = false" class="delete" aria-label="close"></button>
             </header>
             <section class="modal-card-body">
-                <div class="deal">
+                <div class="deal ">
                     <!-- TODO: replace by actual name -->
                     <div class="deal-highlight">{{user.name }}</div>
-                    <div class="deal-wrapper">
+                    <div class="deal-wrapper owner">
                         <!-- TODO: type of an exchange -->
                         <div>{{ exchange.type }}</div>
+                       
                         <!-- TODO: title of exchange  -->
                         <div>{{ exchange.title }}</div>
                         <div>${{ exchange.valuePrice }}</div>
@@ -64,7 +65,9 @@
                 </div>
             </section>
             <footer class="modal-card-foot">
-                <button :class="percentDifferenceClass==='allowed' ? '':'disabled'"  class="button is-success">
+                <button 
+                @click="createOpportunity"
+                :class="percentDifferenceClass==='allowed' ? '':'disabled'"  class="button is-success">
                     Confirm
                 </button>
                 <button @click="isOpen = false" class="button">
@@ -103,6 +106,37 @@ export default {
         "exchange/getLoggedInUserExchanges",
         this.isloggedInUser.id
       );
+    },
+
+    async createOpportunity() {
+      const opportunity = {
+        title: this.exchange.title,
+        exchangeTo: this.exchange.id,
+        toUser: this.user.id,
+        fromUser: this.isloggedInUser.id
+      };
+
+      if (this.isOfferingCredit) {
+        opportunity.exchangeFromC = parseInt(this.offerCredit, 10);
+      } else {
+        opportunity.exchangeFrom = this.selectedExchange.id;
+      }
+
+      await axios
+        .post("/app/opportunities", opportunity)
+        .then(res => {
+          if (res.data.status) {
+            const opportunity = res.data.user;
+            this.$store.dispatch("opportunity/createOpportunity", opportunity);
+            this.$toasted.success(res.data.message, {
+              theme: "bubble",
+              position: "top-center",
+              duration: 5000
+            });
+            this.isOpen = false;
+          }
+        })
+        .catch(err => console.log(err));
     }
   },
   computed: {
@@ -187,6 +221,9 @@ export default {
   &-declined {
     background-color: #ffc2c2;
   }
+}
+.owner {
+  background-color: #dbdada;
 }
 .disabled {
   &.field {

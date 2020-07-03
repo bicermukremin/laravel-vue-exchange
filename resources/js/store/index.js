@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import exchange from "./modules/exchange";
+import opportunity from "./modules/opportunity";
 import user from "./modules/user";
 import role from "./modules/role";
 
@@ -11,7 +12,8 @@ export default new Vuex.Store({
     modules: {
         exchange,
         user,
-        role
+        role,
+        opportunity
     },
     actions: {},
     mutations: {}

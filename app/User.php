@@ -14,6 +14,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Exchange::class);
     }
+    public function opportunities()
+    {
+        return $this->belongsToMany(Opportunity::class);
+    }
 
     public function role()
     {

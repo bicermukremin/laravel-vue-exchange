@@ -14,7 +14,7 @@ $factory->define(Exchange::class, function (Faker $faker) {
         'image' => $faker->imageUrl($width = 640, $height = 480),
         'country' => $faker->country,
         'city' => $faker->city,
-        'tag_id' => $faker->biasedNumberBetween($min = 1, $max = 10),
+
 
     ];
 });

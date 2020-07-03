@@ -1,114 +1,180 @@
 <template>
-    <div class="columns">
-        <div class="container profile">
-            <div class="section profile-heading">
-                <div class="columns is-mobile is-multiline">
-                    <div class="column is-2">
-                        <figure class="image  header-icon user-profile-image">
-                            <!-- TODO: Get user avatar here -->
-                            <img class="is-rounded" :src="user.avatar" />
-                        </figure>
-                    </div>
-                    <div class="column is-4-tablet is-10-mobile name">
-                        <div class="user-info">
-                            <p>
-                                <!-- TODO: Display user name here -->
-                                <span class="title is-bold">{{
+<div class="columns">
+    <div class="container profile">
+        <div class="section profile-heading">
+            <div class="columns is-mobile is-multiline">
+                <div class="column is-2">
+                    <figure class="image  header-icon user-profile-image">
+                        <!-- TODO: Get user avatar here -->
+                        <img class="is-rounded" :src="user.avatar" />
+                    </figure>
+                </div>
+                <div class="column is-4-tablet is-10-mobile name">
+                    <div class="user-info">
+                        <p>
+                            <!-- TODO: Display user name here -->
+                            <span class="title is-bold">{{
                                     user.name
                                 }}</span>
-                                <br />
-                                <!-- TODO: Here will be user update functionality -->
-                            </p>
-                            <!-- TODO: User info Here if any -->
-                            <p class="tagline">
-                                {{ user.info }}
-                            </p>
-                        </div>
-                        <ProfileUpdate :user="user" @save="saveProfile" />
+                            <br />
+                            <!-- TODO: Here will be user update functionality -->
+                        </p>
+                        <!-- TODO: User info Here if any -->
+                        <p class="tagline">
+                            {{ user.info }}
+                        </p>
                     </div>
-                    <!-- TODO: Set activeTab variable to 'pending exchanges' and class to 'isActive' when activeTab === 'pending exchanges' -->
-                    <div
-                        class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
-                    >
-                        <p class="stat-val">Received</p>
-                        <p class="stat-key">Exchanges</p>
-                    </div>
+                    <ProfileUpdate :user="user" @save="saveProfile" />
+                </div>
+                <!-- TODO: Set activeTab variable to 'pending exchanges' and class to 'isActive' when activeTab === 'pending exchanges' -->
+                <div :class="{isActive : activeTab==='recieved'}" @click="activeTab='recieved'" class="stats-tab column is-2-tablet is-4-mobile has-text-centered">
+                    <p class="stat-val">Received</p>
+                    <p class="stat-key">Opportunity</p>
+                </div>
 
-                    <!-- TODO: Set activeTab variable to 'sent exchanges' and class to 'isActive' when activeTab === 'sent exchanges' -->
-                    <div
-                        class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
-                    >
-                        <p class="stat-val">Sent</p>
-                        <p class="stat-key">Exchanges</p>
-                    </div>
+                <!-- TODO: Set activeTab variable to 'sent exchanges' and class to 'isActive' when activeTab === 'sent exchanges' -->
+                <div :class="{isActive : activeTab==='sent'}" @click="activeTab='sent'" class="stats-tab column is-2-tablet is-4-mobile has-text-centered">
+                    <p class="stat-val">Sent</p>
+                    <p class="stat-key">Opportunity</p>
+                </div>
 
-                    <!-- TODO: Set activeTab variable to 'accepted exchanges' and class to 'isActive' when activeTab === 'accepted exchanges' -->
-                    <div
-                        class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
-                    >
-                        <p class="stat-val">Accepted</p>
-                        <p class="stat-key">Exchanges</p>
-                    </div>
+                <!-- TODO: Set activeTab variable to 'accepted exchanges' and class to 'isActive' when activeTab === 'accepted exchanges' -->
+                <div class="stats-tab column is-2-tablet is-4-mobile has-text-centered">
+                    <p class="stat-val">50</p>
+
                 </div>
             </div>
-            <!-- TODO: Display this div when activeTab === 'exchanges pending' -->
-            <div class="columns is-mobile is-multiline">
-                <!-- TODO: Iterate over exchanges -->
-                <template>
-                    <div class="column is-3-tablet is-6-mobile">
-                        <!-- Exchanges -->
-                        <div class="card">
-                            <div class="card-image">
-                                <figure class="image is-4by3">
-                                    <!-- TODO: Display Exchange Image -->
-                                    <img src="https://placehold.it/300x225" />
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                <div class="media">
-                                    <div class="media-content">
-                                        <!-- TODO: Display Exchange title -->
-                                        <p class="title is-4">Some Title</p>
-                                        <!-- TODO: Display Exchange type name -->
-                                        <p class="subtitle is-6">
-                                            <span class="tag is-dark subtitle"
-                                                >Product</span
-                                            >
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="content">
-                                    <!-- TODO: Display exchange shortInfo -->
-                                    <p>
-                                        Just some short info
+        </div>
+        <!-- TODO: Display this div when activeTab === 'exchanges pending' -->
+        <div v-if="activeTab==='recieved'" class="columns is-mobile is-multiline">
+            <!-- TODO: Iterate over exchanges -->
+            <template v-if="recievedOpportunities && recievedOpportunities.length>0">
+                <div v-for="opp in recievedOpportunities" :key="opp.id" class="column is-3-tablet is-6-mobile">
+                    <!-- Exchanges -->
+                    <div class="card">
+                        <div class="card-image">
+
+                            <figure class="image is-4by3">
+                                <!-- TODO: Display Exchange Image -->
+                                <img :src="opp.exchanges[0].image || ''" />
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <!-- TODO: Display Exchange title -->
+                                    <p class="title is-4">{{ opp.exchanges[0].title || opp.cash}}</p>
+                                    <!-- TODO: Display Exchange type name -->
+                                    <p class="subtitle is-6">
+                                        <span :class="[
+                                        {'is-success': opp.status === 'accepted'},
+                                        {'is-danger': opp.status === 'declined'},
+                                        {'is-warning': opp.status === 'pending'}  
+                                        ]"
+                                        class="tag is-dark subtitle">{{ opp.status}}</span>
                                     </p>
                                 </div>
                             </div>
-                            <footer class="card-footer">
-                                <router-link to="/" class="card-footer-item"
-                                    >Accept</router-link
-                                >
-                                <a class="card-footer-item delete-item"
-                                    >Decline</a
-                                >
-                            </footer>
+                            <div class="content">
+                                <!-- TODO: Display exchange shortInfo -->
+                                <p>
+                                    {{ opp.exchanges[0].description || ''}}
+                                </p>
+                                <p>
+                                    ${{ opp.exchanges[0].valuePrice || opp.cash}}
+                                </p>
+                            </div>
                         </div>
-                        <br />
+                        <footer v-if="opp.status !=='declined'" class="card-footer">
+                            <OpportunityRecieve :offerUser="opp.fromUserName " :offerExchange="opp.exchanges[1]" :offerCash="opp.cash" :opportunity="opp" :myself="user" :myExchange="opp.exchanges[0]"></OpportunityRecieve>
+                            <OpportunityAccept 
+                            :opportunity="opp" 
+                            ></OpportunityAccept>
+
+                        </footer>
                     </div>
-                </template>
-                <!-- <div v-else class="stats-error">
-          No  pending exchanges :(
-        </div> -->
+                    <br />
+                </div>
+
+            </template>
+            <div v-else class="stats-error">
+                No pending exchanges :(
+            </div>
+        </div>
+        <div v-if="activeTab==='sent'" class="columns is-mobile is-multiline">
+            <!-- TODO: Iterate over exchanges -->
+            <template v-if="sendOpportunities && sendOpportunities.length>0">
+
+                <div v-for="opp in sendOpportunities" :key="opp.id" class="column is-3-tablet is-6-mobile">
+                    <!-- Exchanges -->
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <!-- TODO: Display Exchange Image -->
+                                <img :src="opp.exchanges[0].image" />
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <!-- TODO: Display Exchange title -->
+                                    <p class="title is-4">{{ opp.exchanges[0].title || opp.cash }}</p>
+                                    <!-- TODO: Display Exchange type name -->
+                                    <p class="subtitle is-6">
+                                        <span :class="[
+                                        {'is-success': opp.status === 'accepted'},
+                                        {'is-danger': opp.status === 'declined'},
+                                        {'is-warning': opp.status === 'pending'}  
+                                        ]" class="tag is-dark subtitle">{{ opp.status }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <!-- TODO: Display exchange shortInfo -->
+                                <p>
+                                    {{ opp.exchanges[0].description || '' }}
+                                </p>
+                                <p>
+                                    ${{ opp.exchanges[0].valuePrice || opp.cash}}
+                                </p>
+                            </div>
+                        </div>
+                        <footer v-if="opp.status !=='declined'" class="card-footer" style="width:100%;">
+                            <OpportunitySent ref="sent" :offerUser="opp.exchanges[0].user" :offerExchange="opp.exchanges[0]" :myself="user" :opportunity="opp" :myExchange="opp.exchanges[1]" :myCash="opp.cash"></OpportunitySent>
+                            <OpportunityAccept 
+                            :opportunity="opp" 
+                            ></OpportunityAccept>
+
+                        </footer>
+                    </div>
+                    <br />
+                </div>
+
+            </template>
+            <div v-else class="stats-error">
+                No pending exchanges :(
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
 import ProfileUpdate from "./ProfileUpdate";
+import OpportunitySent from "./../opportunity/OpportunitySent";
+import OpportunityAccept from "./../opportunity/OpportunityAccept";
+import OpportunityRecieve from "./../opportunity/OpportunityRecieve";
 /* import { mapGetters } from "vuex"; */
 export default {
+  data() {
+    return {
+      activeTab: "recieved"
+    };
+  },
   components: {
+    OpportunitySent,
+    OpportunityRecieve,
+    OpportunityAccept,
     ProfileUpdate
   },
   computed: {
@@ -116,7 +182,17 @@ export default {
 
     user() {
       return this.$store.state.user.user;
+    },
+
+    sendOpportunities() {
+      return this.$store.state.opportunity.user.sendOpportunities;
+    },
+    recievedOpportunities() {
+      return this.$store.state.opportunity.user.recievedOpportunities;
     }
+  },
+  created() {
+    this.$store.dispatch("opportunity/fetchOpportunity");
   },
   methods: {
     async saveProfile(profile) {

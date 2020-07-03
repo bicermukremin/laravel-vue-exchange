@@ -94,7 +94,7 @@ export default {
           if (response.status) {
             this.$store.dispatch("user/logout");
             this.$router.push({
-              name: "login"
+              name: "Home"
             });
           }
         });

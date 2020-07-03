@@ -23,6 +23,7 @@ class CreateExchangesTable extends Migration
             $table->string('image');
             $table->string('country');
             $table->string('city');
+            $table->string('grade')->default('first');
             $table->string('status')->default('active');
             $table->timestamps();
         });
