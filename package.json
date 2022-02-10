@@ -28,7 +28,7 @@
         "css-loader": "^3.2.0",
         "laravel-vue-pagination": "^2.3.1",
         "moment": "^2.26.0",
-        "node-sass": "^4.12.0",
+        "node-sass": "^7.0.0",
         "sass-loader": "^8.0.0",
         "vue-router": "^3.3.4",
         "vue-toasted": "^1.1.28",
